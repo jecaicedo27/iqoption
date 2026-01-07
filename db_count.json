@@ -1,0 +1,1 @@
+{"query":"select count() from trades_memory","columns":[{"name":"count()","type":"LONG"}],"timestamp":-1,"dataset":[[1]],"count":1}

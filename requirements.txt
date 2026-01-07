@@ -1,0 +1,6 @@
+iqoptionapi
+pandas
+numpy
+websocket-client==0.56.0
+scikit-learn
+tensorflow
