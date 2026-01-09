@@ -1,15 +1,12 @@
-*.pyc
 __pycache__/
-*.log
-*.csv
+*.pyc
 venv/
 .env
+*.log
 *.db
-node_modules/
-.DS_Store
-
-# Large files - do not commit
-jdk-*/
-openjdk-*.tar.gz
-questdb-*/
+trades_backup_verified.csv
+*.sqlite
+questdb*/
+jdk*/
+openjdk*/
 *.tar.gz

@@ -1,21 +1,18 @@
-import google.generativeai as genai
 import pandas as pd
-import numpy as np
 import time
 import re
-import os
 import sys
+import requests
+import json
 from datetime import datetime
 from iqoptionapi.stable_api import IQ_Option
 import iqoptionapi.constants as OP_code
-from app.config import EMAIL, PASSWORD, DEFAULT_ASSET, DEFAULT_TIMEFRAME, DEFAULT_AMOUNT, ACCOUNT_TYPE, GOOGLE_API_KEY
+from app.config import EMAIL, PASSWORD, DEFAULT_ASSET, DEFAULT_TIMEFRAME, DEFAULT_AMOUNT, ACCOUNT_TYPE
 from app.db_quest import QuestDBManager
 
-# Configuration
-# GOOGLE_API_KEY imported from config
-genai.configure(api_key=GOOGLE_API_KEY)
-# Using gemini-2.0-flash for higher RPM quota (paid API)
-model = genai.GenerativeModel('gemini-2.0-flash') 
+# Configuration for local Ollama
+OLLAMA_URL = "http://localhost:11434/api/generate"
+MODEL_NAME = "llama3.1:8b"
 
 def wait_for_next_candle():
     """Wait until the 57th second of the current minute to trigger analysis"""
@@ -23,7 +20,7 @@ def wait_for_next_candle():
     while True:
         now = datetime.now()
         if now.second == 57:
-            time.sleep(0.1) # Small buffer
+            time.sleep(0.1)
             break
         time.sleep(0.5)
 
@@ -35,14 +32,16 @@ def get_market_data(api, asset, count=60):
     df.rename(columns={'max': 'high', 'min': 'low'}, inplace=True)
     return df
 
-def ask_gemini(df):
-    latest = df.tail(60).to_string(index=False)
+def ask_local_llm(df):
+    """Use local LLaMA 3.1 via Ollama"""
+    # Solo últimas 20 velas (20 min) en lugar de 60 para mayor velocidad
+    latest = df.tail(20).to_string(index=False)
     
-    # PROMPT ORIGINAL (FLEXIBLE)
+    # PROMPT ORIGINAL (FLEXIBLE) - Optimizado para velocidad
     prompt = f"""
     Act as a Quantitative Systematic Trader. Analyze these 60s candles for {DEFAULT_ASSET}.
     
-    DATA (Last 1 hour):
+    DATA (Last 20 minutes):
     {latest}
     
     TASK: Identify High Probability setups for the next 1 minute.
@@ -57,9 +56,21 @@ def ask_gemini(df):
     """
     
     try:
-        response = model.generate_content(prompt)
-        text = response.text.strip()
-        return text
+        response = requests.post(OLLAMA_URL, 
+            json={
+                "model": MODEL_NAME,
+                "prompt": prompt,
+                "stream": False
+            },
+            timeout=180  # 3 minute timeout (más tiempo para CPU)
+        )
+        
+        if response.status_code == 200:
+            result = response.json()
+            return result.get('response', 'ERROR: No response')
+        else:
+            return f"ACTION: WAIT | CONFIDENCE: 0 | Error: API returned {response.status_code}"
+            
     except Exception as e:
         return f"ACTION: WAIT | CONFIDENCE: 0 | Error: {e}"
 
@@ -68,7 +79,7 @@ def parse_response(text):
     action = "WAIT"
     confidence = 0.0
     
-    # Regex for Action: handles **ACTION:**, ACTION:, "ACTION": etc.
+    # Regex for Action
     action_match = re.search(r'ACTION[:\s\"\'\*]+(CALL|PUT|WAIT)', text_upper)
     if action_match:
         action = action_match.group(1)
@@ -81,9 +92,10 @@ def parse_response(text):
     return action, confidence, text
 
 def run_llm_bot():
-    print("🚀 GENESIS: Gemini Pro Trader ACTIVATED (ILIMITADO - 24/7)")
+    print("🚀 LOCAL LLM BOT ACTIVATED (LLaMA 3.1 8B)")
     print(f"✅ Asset: {DEFAULT_ASSET} | Prompt: ORIGINAL (FLEXIBLE)")
-    print(f"✅ Config: Confianza > 75% (Selectivo - Francotirador)")
+    print(f"✅ Config: Confianza > 75% | Model: {MODEL_NAME}")
+    print(f"💰 COSTO API: $0/mes (100% Local)")
     
     # Init DB
     db = QuestDBManager()
@@ -109,12 +121,7 @@ def run_llm_bot():
                 print("⚠️  Lost connection. Reconnecting...")
                 api.connect()
                 
-            # DISABLE SNIPER MODE - Continuous Check
-            # wait_for_next_candle()
-            
             iteration += 1
-            # print(f"\n{'='*60}")
-            # print(f"🎯 Cycle #{iteration} | {time.strftime('%Y-%m-%d %H:%M:%S')}")
             
             df = get_market_data(api, DEFAULT_ASSET)
             
@@ -126,17 +133,17 @@ def run_llm_bot():
             # Check if we already traded this candle
             current_candle_time = df.iloc[-1]['from']
             if current_candle_time == last_trade_candle:
-                # print("💤 Already traded this candle. Waiting...", end='\r')
                 time.sleep(2)
                 continue
 
             print(f"\n🎯 Analyzing Candle {time.strftime('%H:%M:%S', time.localtime(current_candle_time))}...")
             
-            gemini_raw = ask_gemini(df)
-            action, confidence, raw_text = parse_response(gemini_raw)
+            llm_raw = ask_local_llm(df)
+            action, confidence, raw_text = parse_response(llm_raw)
             print(f"🧠 AI: {action} ({confidence}%)")
+            
             if confidence == 0:
-                print(f"⚠️ RAW ERROR: {gemini_raw}")
+                print(f"⚠️ RAW ERROR: {llm_raw[:200]}")
             
             # Only trade if confidence >= 75%
             if action in ["CALL", "PUT"] and confidence >= 75:
@@ -146,7 +153,7 @@ def run_llm_bot():
                 check, trade_id = api.buy(DEFAULT_AMOUNT, DEFAULT_ASSET, direction, DEFAULT_TIMEFRAME)
                 
                 if check:
-                    last_trade_candle = current_candle_time # MARK CANDLE AS TRADED
+                    last_trade_candle = current_candle_time
                     
                     trade_timestamp = int(time.time())
                     print(f"✅ Trade Executed | ID: {trade_id}")
@@ -188,11 +195,8 @@ def run_llm_bot():
                     )
                 else:
                     print(f"❌ Trade Failed")
-            else:
-                 # print(f"⏸️  WAIT: {confidence}%", end='\r')
-                 pass
             
-            # Ultra-conservative checking (every 60 seconds - Max efficiency)
+            # Ultra-conservative checking (every 60 seconds)
             time.sleep(60)
             
         except KeyboardInterrupt:

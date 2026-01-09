@@ -4,6 +4,8 @@ import pandas as pd
 import time
 import requests
 import io
+import csv
+import os
 
 class QuestDBManager:
     def __init__(self, host='localhost', ilp_port=9009, rest_port=9000):
@@ -12,33 +14,31 @@ class QuestDBManager:
         self.rest_port = rest_port
         # Note: QuestDB default ILP port is 9009
         
-    def save_trade(self, asset, price, prediction, confidence, features, result=None, profit=0.0, timestamp=None, model_name="Unknown"):
+    def save_to_csv_backup(self, asset, direction, amount, confidence, market_data, trade_id, ai_reason, timestamp):
+        try:
+            file_exists = os.path.isfile("trades_backup.csv")
+            ts_str = str(timestamp) if timestamp else str(time.time())
+            
+            with open("trades_backup.csv", "a", newline='', encoding='utf-8') as f:
+                writer = csv.writer(f)
+                if not file_exists:
+                    writer.writerow(["timestamp", "trade_id", "asset", "direction", "amount", "confidence", "ai_reason", "market_data"])
+                
+                writer.writerow([ts_str, trade_id, asset, direction, amount, confidence, ai_reason, str(market_data)])
+                print("✅ Trade saved to CSV BACKUP (Safe!)")
+        except Exception as e:
+            print(f"❌ CRITICAL CSV ERROR: {e}")
+
+    def save_trade(self, asset, direction, amount, confidence, market_data, trade_id="", result="PENDING", profit=0.0, timestamp=None, ai_reason=""):
         """
-        Guarda una operación en QuestDB usando ILP (Alta Velocidad).
+        Guarda trade con TODOS los datos para entrenamiento (incluyendo snapshot del mercado).
         """
         try:
             # Use Sender.from_conf for TCP ILP
             conf = f'tcp::addr={self.host}:{self.ilp_port};'
             with Sender.from_conf(conf) as sender:
-                # Features formatting (as string or individual columns?)
-                # To be useful for training, we should save critical features as columns
-                # or the entire vector as a string blob.
-                # For "Re-training from errors", we need the exact input vector.
-                
-                # Features is usually a list of recent values.
-                # Let's save 3 key inputs: Close, Vol, RSI (last values)
-                # But actually we operate on sequences. Saving 60 candles is heavy.
-                # Better: Save the 'snapshot' of the moment.
-                
-                # For now, simplistic structure:
-                # Sanitize Features
-                close_v = float(features[-1][0]) if len(features) > 0 else 0.0
-                vol_v = int(features[-1][1]) if len(features) > 0 else 0
-                rsi_v = float(features[-1][2]) if len(features) > 0 else 0.0
-                
                 # Handle Timestamp
                 if timestamp:
-                    # Convert float seconds to nanoseconds int and wrap
                     ts = TimestampNanos(int(timestamp * 1e9))
                 else:
                     ts = TimestampNanos.now()
@@ -47,42 +47,36 @@ class QuestDBManager:
                     'trades_memory',
                     symbols={
                         'asset': str(asset), 
-                        'prediction': str(prediction), 
+                        'direction': str(direction),
                         'result': str(result),
-                        'model_id': str(model_name) # NEW: Bot Identity
+                        'model_id': "Gemini_Pro_Real",
+                        'trade_id': str(trade_id) # ✅ Storing ID symbol
                     },
                     columns={
-                        'price': float(price),
+                        'amount': float(amount),
                         'confidence': float(confidence),
                         'profit': float(profit),
-                        'features_json': str(features), # Backup
-                        'close_val': close_v, 
-                        'vol_val': vol_v,
-                        'rsi_val': rsi_v
+                        'ai_reason': str(ai_reason)[:255],
+                        'market_data': str(market_data) # ✅ DATOS CRÍTICOS PARA ENTRENAMIENTO
                     },
                     at=ts
                 )
                 sender.flush()
-                print(f"✅ Trade guardado en QuestDB: {asset} | {prediction} | Conf: {confidence:.2f}")
-        except IngressError as e:
-            print(f"⚠️ QuestDB Error: {e}")
-        except Exception as e:
-            print(f"⚠️ DB Error: {e}")
+                print(f"✅ Trade guardado en DB para entrenamiento: {direction} | Conf: {confidence}%")
+        except (IngressError, Exception) as e:
+            print(f"⚠️ DB Save Error: {e}. Switching to CSV Backup...")
+            self.save_to_csv_backup(asset, direction, amount, confidence, market_data, trade_id, ai_reason, timestamp)
     
-    def update_trade_result(self, asset, timestamp, result, profit):
+    def update_trade_result(self, trade_id, result, profit):
         """
         Actualiza el resultado de un trade existente usando REST API.
         """
         try:
-            # Convert timestamp to microseconds for QuestDB
-            ts_micros = int(timestamp * 1e6)
-            
-            # Use UPDATE query via REST
+            # Use UPDATE query via REST matches by trade_id
             query = f"""
             UPDATE trades_memory 
             SET result = '{result}', profit = {profit}
-            WHERE asset = '{asset}' 
-            AND timestamp = '{ts_micros}'
+            WHERE trade_id = '{trade_id}'
             """
             
             url = f"http://{self.host}:{self.rest_port}/exec"

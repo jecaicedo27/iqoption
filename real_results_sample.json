@@ -1,0 +1,523 @@
+{
+  "trades": [
+    {
+      "time": "23:45",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "22:44",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "22:41",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "22:30",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "22:27",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "22:17",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "22:15",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "22:14",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "22:10",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "22:09",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "22:07",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "22:06",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "22:05",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "22:04",
+      "result": "PUSH",
+      "pl": 0
+    },
+    {
+      "time": "22:03",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "22:02",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "22:01",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "22:00",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "22:00",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "21:58",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "21:57",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "21:55",
+      "result": "LOSS",
+      "pl": -600
+    },
+    {
+      "time": "21:54",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "21:53",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "21:48",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "21:44",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "21:42",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "21:41",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "21:37",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "21:36",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "21:33",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "21:30",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "21:28",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "21:27",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "21:25",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "21:24",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "21:23",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "21:22",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "21:21",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "21:20",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "21:19",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "21:17",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "21:13",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "21:11",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "21:10",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "21:08",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "21:05",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "21:04",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "21:03",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "21:02",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "20:58",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "20:57",
+      "result": "WIN",
+      "pl": 6800
+    },
+    {
+      "time": "20:55",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "20:53",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "20:50",
+      "result": "LOSS",
+      "pl": -8000
+    },
+    {
+      "time": "20:48",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "20:46",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "20:45",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "20:44",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "20:43",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "20:40",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "20:38",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "20:37",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "20:33",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "20:26",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "20:21",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "20:18",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "20:17",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "20:15",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "20:11",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "20:10",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "20:09",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "20:08",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "20:07",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "20:05",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "20:04",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "20:03",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "20:02",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "19:58",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "19:57",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "19:55",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "19:54",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "19:51",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "19:50",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "19:49",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "19:45",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "19:42",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "19:41",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "19:40",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "19:38",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "19:37",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "19:35",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "19:33",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "19:32",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "19:29",
+      "result": "WIN",
+      "pl": 6800
+    },
+    {
+      "time": "19:26",
+      "result": "WIN",
+      "pl": 6800
+    },
+    {
+      "time": "19:24",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "19:21",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "19:20",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "19:18",
+      "result": "LOSS",
+      "pl": -4000
+    },
+    {
+      "time": "19:15",
+      "result": "WIN",
+      "pl": 3400
+    },
+    {
+      "time": "19:14",
+      "result": "WIN",
+      "pl": 3400
+    }
+  ],
+  "summary": {
+    "total": 102,
+    "wins": 40,
+    "losses": 61,
+    "pushes": 1,
+    "win_rate": 39.603960396039604,
+    "total_pl": -98400,
+    "roi": -24.320316361838852
+  }
+}

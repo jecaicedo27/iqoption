@@ -1,0 +1,12 @@
+BOT TRADING GEMINI - REPORTE FINAL
+================================================================================
+
+Período: 21:46 (5 ene) - 00:02 (7 ene)
+Total Trades: 343
+Wins: 162 | Losses: 175 | Empates: 6
+Win Rate: 48.07%
+P&L: $-113,210 COP
+ROI: -16.12%
+
+VEREDICTO: NO RENTABLE
+Balance: $124,700 → $68,700 (Pérdida: $56,000)
